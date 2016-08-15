@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - Dunedin Ignite!</title>
+
+        <meta name="description" content="The Dunedin Ignite! community group is a Microsoft development and interest group organised and run by industry professionals" />
+        <meta name="keywords" content="dunedin, microsoft, user group, .net, mvc, framework, learning, software, programming, development, crm, nav, ax, web" />
+
+
+        <environment names="Development">
+            <link rel="stylesheet" href="~/css/foundation.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+        </environment>
+        <environment names="Staging,Production">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.0/foundation.min.css"
+                  asp-fallback-href="~/lib/foundation/foundation.min.css"
+                  asp-fallback-test-class="off-canvas" asp-fallback-test-property="outline" asp-fallback-test-value="0" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css"
+                  asp-fallback-href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        </environment>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600' rel='stylesheet' type='text/css'>
+
+        @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
+    </head>
+<body>
+    <header class="main-header">
+
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <ul class="contrast menu" data-dropdown-menu>
+                    <li><p class="h3"><a href="/">Dunedin Ignite!</a></p></li>
+                </ul>
+            </div>
+            <nav id="main-menu" class="top-bar-right">
+                @Html.Partial("_LoginPartial")
+            </nav>
+        </div>
+        @*<div class="top-bar sticky">
+            <div class="top-bar-left">
+                <ul class="menu contrast">
+                    <li><p class="h3"><a href="/">Dunedin Ignite!</a></p></li>
+                </ul>
+            </div>
+            <nav id="main-menu" class="top-bar-right">
+
+                Html.Partial("_LoginPartial")
+
+            </nav>
+        </div>*@
+
+    </header>
+    <div class="container body-content">
+
+        @RenderBody()
+
+    </div>
+    <footer>
+        <div class="content-row meeting-landing">
+
+            <div class="" style="margin: 0 auto; width: 70%;">
+                <div class="">
+
+                    <div class="pull-left">
+                        <p class="contrast">
+                            <span style="font-size: 2em;"><a href="https://twitter.com/Phil_Wheeler" target="_blank"><i class="fi-social-twitter"></i></a></span>
+                            &copy; 2016 &mdash; Phil Wheeler
+                        </p>
+                        <p class="meta contrast"></p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+        <environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/js/foundation.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery">
+            </script>
+            @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+            </script>*@
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+            <!-- Start of Woopra Code -->
+            <script>
+                (function(){
+                        var t,i,e,n=window,o=document,a=arguments,s="script",r=["config","track","identify","visit","push","call","trackForm","trackClick"],c=function(){var t,i=this;for(i._e=[],t=0;r.length>t;t++)(function(t){i[t]=function(){return i._e.push([t].concat(Array.prototype.slice.call(arguments,0))),i}})(r[t])};for(n._w=n._w||{},t=0;a.length>t;t++)n._w[a[t]]=n[a[t]]=n[a[t]]||new c;i=o.createElement(s),i.async=1,i.src="//static.woopra.com/js/w.js",e=o.getElementsByTagName(s)[0],e.parentNode.insertBefore(i,e)
+                })("woopra");
+
+                woopra.config({
+                    domain: 'dunedinignite.pro'
+                });
+                woopra.track();
+            </script>
+            <!-- End of Woopra Code -->
+
+        </environment>
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

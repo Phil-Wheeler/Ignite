@@ -1,0 +1,63 @@
+@model IEnumerable<Ignite.Models.Meeting>
+
+@{
+    ViewData["Title"] = "Meetings";
+}
+
+
+<section class="content-row meeting-landing">
+    <div class="row">
+        <div class="large-12 medium-12 small-12 columns">
+
+            <h1 class="contrast">@ViewData["Title"]</h1>
+
+        </div>
+    </div>
+
+</section>
+<section class="content-row row">
+    <div class="large-7 medium-8 small-12 columns">
+
+        <h2>Past Meetings</h2>
+        <div class="meeting-list">
+            <ul class="no-bullet">
+                @foreach (var meeting in Model.OrderByDescending(m => m.Start))
+                {
+                    <li id="@meeting.Id">
+                        <div class="callout">
+                            <div class="right text-right average-rating">
+                                @if (meeting.Attendances.Any())
+                                {
+                                    for (int i = 0; i < meeting.Attendances.Average(a => a.Rating); i++)
+                                    { <i class="fi-star"></i> }
+                                }
+                            </div>
+                            <p class="meta">@meeting.Start.ToString("MMM dd, yyyy") &bull; @meeting.Start.ToString("HH:mm tt")</p>
+                            <h3><a asp-action="Details" asp-route-id="@meeting.Id">@meeting.Title</a></h3>
+                            @if(meeting.Attendances.Any())
+                            {
+                                <p class="meta">
+                                    @meeting.Attendances.GroupBy(x => x.Attendee).Count() Members | 
+                                </p>
+
+                            }
+                            else
+                            {
+
+                                <p class="meta">No attendees</p>
+
+                            }
+                            <p>@meeting.Description</p>
+                        </div>
+                    </li>
+
+                }
+            </ul>
+        </div>
+
+    </div>
+    <div class="large-5 medium-4 hide-for-small-only columns">
+
+
+    </div>
+</section>

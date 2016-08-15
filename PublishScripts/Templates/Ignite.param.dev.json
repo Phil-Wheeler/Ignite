@@ -1,0 +1,32 @@
+{
+  "siteName": {
+    "value": "Ignitedunedin"
+  },
+  "hostingPlanName": {
+    "value": "Shared"
+  },
+  "siteLocation": {
+    "value": "Australia Southeast"
+  },
+  "sku": {
+    "value": "Shared"
+  },
+  "workerSize": {
+    "value": "0"
+  },
+  "serverName": {
+    "value": "wheeler"
+  },
+  "serverLocation": {
+    "value": "East Asia"
+  },
+  "administratorLogin": {
+    "value": "pw-admin"
+  },
+  "administratorLoginPassword": {
+    "value": "v3)*cW75(pb yfGU}*hj"
+  },
+  "databaseName": {
+    "value": "ignite-dn"
+  }
+}

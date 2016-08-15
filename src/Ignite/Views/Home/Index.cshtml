@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Ignite.Models.Meeting>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="landing">
+    <div class="inner-feature">
+
+        <div class="left-block">
+            <h2>Dunedin Microsoft Ignite! Community</h2>
+            <p class="contrast">By professionals, for professionals</p>
+        </div>
+        <div class="call-to-action">
+            <ul class="actions vertical no-bullet">
+                <li><a asp-controller="Account" asp-action="Register" class="button special major">Register</a></li>
+                <li><a asp-action="Login" asp-controller="Account" class="button special major">Sign in</a></li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<section class="content-row">
+    <div class="row">
+
+        <div class="large-7 medium-6 small-12 columns">
+            <h2>Dunedin&rsquo;s Microsoft software<br>  development and interest community</h2>
+            <p>
+                We&rsquo;re breathing new life into the Microsoft Technical Community in Dunedin.
+                Come along to hear about the latest technology news from Microsoft&rsquo;s stack,
+                including the .Net framework, open source development, Azure, Windows, NAV / AX
+                and a whole range of things in between!
+            </p>
+            <ul class="actions no-bullet">
+                <li><a asp-action="About" class="button clear">About this group</a></li>
+            </ul>
+        </div>
+        <div class="large-5 medium-6 hide-for-small-only columns">
+            <div class="callout">
+                <h3>Next Meeting</h3>
+                @if (Model.Any(m => m.Start >= DateTime.Now))
+                {
+                    var nextMeeting = Model.FirstOrDefault(m => m.Start >= DateTime.Now);
+                    <h4>@nextMeeting.Title</h4>
+                    <p>@nextMeeting.Start </p>
+                    <ul class="actions no-bullet">
+                        <li><a class="button clear" asp-action="Details" asp-controller="Meetings" asp-route-id="@nextMeeting.Id">Read more</a></li>
+                    </ul>
+                }
+                else
+                {
+                    <p>There are currently no upcoming meetings, but check back again soon!</p>
+
+                }
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<section id="two" class="content-row">
+    <div class="inner row">
+        <header class="major">
+            <h2>Past Meetings</h2>
+            <p>
+                Check our previous meeting speakers and topics here or click for more details.
+            </p>
+        </header>
+        <div class="features row">
+        @foreach (Meeting meeting in Model.Where(x => x.Start < DateTime.Now))
+        {
+            <div class="large-4 small-12 columns" style="margin-bottom: 1em;">
+                <section class="callout">
+                    <span class="icon major fi-social-windows"></span>
+                    <h3>@meeting.Title</h3>
+                    <p class="meta">@meeting.Start.ToString("dddd, dd MMM yyyy")</p>
+                    @*<p>@meeting.Description</p>*@
+                    <p><a asp-action="Details" asp-controller="Meetings" asp-route-id="@meeting.Id" class="button clear">Read more</a></p>
+                </section>
+            </div>
+        }
+        </div>
+    </div>
+</section>

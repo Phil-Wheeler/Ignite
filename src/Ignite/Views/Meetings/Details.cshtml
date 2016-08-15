@@ -1,0 +1,174 @@
+@model Ignite.ViewModels.Meetings.MeetingDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="content-row meeting-landing">
+    <div class="row">
+        <div class="large-12 medium-12 small-12 columns">
+
+            <h1 class="contrast">@Model.Meeting.Title</h1>
+
+        </div>
+    </div>
+
+</section>
+<section class="content-row row">
+    <div class="large-9 medium-8 small-12 columns">
+
+        <h2>@Model.Meeting.Title</h2>
+        <div class="meeting-list">
+            <ul class="no-bullet">
+
+
+                    <li id="@Model.Meeting.Id">
+                        <p>@Model.Meeting.Venue &mdash; @Model.Meeting.Start.ToString("MMM dd, yyyy") &bull; @Model.Meeting.Start.ToString("HH:mm tt")</p>
+                        <div class="callout no-border">
+                            @if (Model.Attendances.Count > 0)
+                            {
+                                <p class="meta">@Model.Attendances.GroupBy(m => m.Attendee).Count() Members | 
+                                    <span class="average-rating"> @for (int i = 0; i < Model.Attendances.Average(a => a.Rating); i++)
+                                    { <i class="fi-star"></i> } </span> 
+                                </p>
+                            }
+                            else
+                            {
+
+                                <p class="meta">No attendees</p>
+
+                            }
+                            <p>@Model.Meeting.Description</p>
+                        </div>
+                    </li>
+
+            </ul>
+        </div>
+
+        <hr />
+
+        <div>
+            <h3>Meeting Discussion</h3>
+
+            <ul class="no-bullet comment-list">
+                @foreach (var comment in Model.Attendances.SelectMany(c => c.Comments))
+                {
+                    <li>
+                        <figure class="comment-figure">
+                            <img src="~/images/user.png" alt="profile" />
+                            <figcaption class="h5">@comment.Commenter</figcaption>
+                        </figure>
+                        <div class="comment-item">
+                            <h5>@comment.Commenter</h5>
+                            <p>@comment.Text</p>
+                            <p class="meta">@comment.Posted.ToString("dd MMM yyyy")</p>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+
+
+            <div class="new-comment">
+                @Html.AntiForgeryToken()
+                <form method="post" asp-route-id="@Model.Meeting.Id" asp-action="Comment">
+                    <textarea id="meeting-comment" name="comment" placeholder="Ask a question or leave a comment"></textarea>
+                    <input type="submit" class="button info" value="Post" />
+                </form>
+            </div>
+            @*<div class="meeting-commentary">
+                <ul>
+                        @foreach (var comment in Model.Attendances.SelectMany(c => c.Comments))
+                        {
+
+                            <li>
+                                @comment.Text
+                            </li>
+
+                        }
+                </ul>
+            </div>*@
+        </div>
+
+    </div>
+    <div class="large-3 medium-4 hide-for-small-only columns">
+
+        <h2>Attendance</h2>
+        @if(User.Identity.IsAuthenticated)
+        {
+            if (Model.Meeting.Start > DateTime.Now && !Model.Attendees.Any(a => a.Name == User.Identity.Name))
+            {
+                <p>Do you plan to go?</p>
+            }
+            else
+            {
+                <p>Did you attend?</p>
+                <div id="rating" class="rating-select">
+                    @for (int i = 1; i <= 5; i++)
+                    { <i class="fi-star"></i>  }
+                </div>
+            }
+            <form asp-action="Attend" asp-route-id="@Model.Meeting.Id" method="post" id="attendance-response">
+                <input type="hidden" name="rated" id="rated" value="0" />
+                <button name="response" value="true" class="button">Yes</button> <button name="response" value="false" class="button">No</button>
+            </form>
+
+        }
+        else
+        {
+            if (Model.Meeting.Start >= DateTime.Now)
+            {
+                <p>Will you attend this event? <a asp-action="Register" asp-controller="Account">Register for it</a>.</p>
+
+            }
+            else
+            {
+            <p>
+                Did you attend this event? <a asp-action="Login" asp-controller="Account">Sign in</a> and tell us what you thought.
+            </p>
+            }
+        }
+
+        <hr />
+
+        <aside>
+            <h3>Attendees</h3>
+            <ul class="no-bullet">
+                @foreach (var attendee in Model.Attendees)
+                {
+                    <li>
+                        <p><span class="info label"><i class="fi-check" style="margin-right: 1em;"></i> @attendee.UserName</span></p>
+                    </li>
+                }
+            </ul>
+        </aside>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+
+            $('#rating i').click(function () {
+                $(this).siblings().andSelf().removeClass('rating-selected');
+                var rated = $(this).nextAll().andSelf().addClass('rating-selected').length;
+
+                $('#rated').val(rated);
+
+            });
+
+            //$('#attendance-response button').click(function (e) {
+            //    e.preventDefault();
+
+            //    //$(this).closest('form').submit();
+            //    var model = $(this).closest('form').serialize();
+
+            //    $.post('/Meetings/MeetingResponse', { model: JSON.stringify(model) }, function (data) { });
+
+            //    return false;
+            //});
+
+        })
+    </script>
+}

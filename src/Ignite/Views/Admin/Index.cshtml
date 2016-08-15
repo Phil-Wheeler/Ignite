@@ -1,0 +1,92 @@
+@model IEnumerable<Ignite.Models.Meeting>
+
+@{
+    ViewData["Title"] = "Meeting Administration";
+}
+
+
+<section class="content-row meeting-landing">
+    <div class="row">
+        <div class="large-12 medium-12 small-12 columns">
+
+            <h1 class="contrast">@ViewData["Title"]</h1>
+
+        </div>
+    </div>
+
+</section>
+
+<section class="content-row">
+    <div class="row">
+
+        <div class="large-9 medium-6 small-12 columns">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Start)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Venue)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Start)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Venue)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+}
+            </table>
+        </div>
+        <div class="large-3 medium-6 hide-for-small-only columns">
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+            <ul id="user-list" class="no-bullet">
+
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON('/admin/users', function (data) {
+
+                $(data).each(function (arr, i) {
+
+                    var status = i.Confirmed ? "info" : "warning";
+                    var icon = i.Confirmed ? "check" : "x-circle";
+
+
+                    var list = $('<li />')
+                        .wrapInner(function () {
+                            return '<a href="mailto:' + i.Email + '"><span class="' + status + ' label" style="margin-right: 1em;"><i class="fi-' + icon + '"></i></span>' + i.Name + '</a>';
+                        });
+                    
+                    list.appendTo($('#user-list'));
+                });
+            });
+        });
+    </script>
+}
